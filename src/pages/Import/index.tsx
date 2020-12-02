@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 
 import filesize from 'filesize';
 
+import { constants } from 'buffer';
 import Header from '../../components/Header';
 import FileList from '../../components/FileList';
 import Upload from '../../components/Upload';
@@ -26,8 +27,8 @@ const Import: React.FC = () => {
     const data = new FormData();
 
     if (!uploadedFiles.length) return;
-
     const file = uploadedFiles[0];
+    console.log(file, data);
     data.append('file', file.file, file.name);
     try {
       await api.post('/transactions/import', data);
