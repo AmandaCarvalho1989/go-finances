@@ -1,8 +1,10 @@
 # GoFinances
 
 Este projeto foi realizado com objetivo de estudo durante a jornada do GoStack.
-É basicamente para controle de finanças, onde o usuário pode listar, deletar e cadastrar gastos e entradas de valores.
-O usuário também pode importar esses dados por meio de arquivos .CSV
+<br />
+É uma aplicação para armazenar transações financeiras de entrada e saída, que deve permitir o cadastro e a listagem dessas transações, fazendo tamém a validação do valor de saída da transação, para que este não exceda o valor que o usuário tem em caixa.
+<br />
+O usuário também pode importar esses dados por meio de arquivos `.CSV`
 
 ### Preview
 
@@ -11,8 +13,8 @@ O usuário também pode importar esses dados por meio de arquivos .CSV
 </h1>
 
 ### Recursos 
-- [x]  ReactJS, Typescript e styled-components
-- [x] API: https://api.github.com
+- [x] ReactJS, Typescript e styled-components
+- [x] Integração com a API desenvolvida em NodeJS ( https://github.com/AmandaCarvalho1989/desafio-fundamentos-node2 )
 
 ### Como acessar?
 - Abra a pasta do projeto no VSCode
