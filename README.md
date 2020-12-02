@@ -7,7 +7,7 @@ O usuário também pode importar esses dados por meio de arquivos .CSV
 ### Preview
 
 <h1 align="center">
-  <img alt="GoBarber" title="#GoBarber" src="./src/assets/gobarber-video.gif" />
+  <img alt="GoBarber" title="#GoBarber" src="./src/assets/gofinances-video.gif" />
 </h1>
 
 ### Recursos 
