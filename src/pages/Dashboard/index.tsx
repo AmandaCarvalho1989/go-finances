@@ -21,8 +21,8 @@ interface Transaction {
   formattedValue: string;
   formattedDate: string;
   type: 'income' | 'outcome';
-  category: { title: string };
-  created_at: Date;
+  category: string;
+  createdAt: string;
 }
 
 interface Balance {
@@ -35,34 +35,40 @@ const Dashboard: React.FC = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [balance, setBalance] = useState<Balance>({} as Balance);
 
+  async function loadTransactions(): Promise<void> {
+    const response = await api.get('/transactions');
+
+    const formatedTransactions = response.data.transactions.map(
+      (transaction: Transaction) => ({
+        ...transaction,
+        formattedValue: formatValue(transaction.value),
+        formattedDate: new Date(transaction.createdAt).toLocaleDateString(
+          'pt-br',
+        ),
+      }),
+    );
+
+    const formatedBalance = {
+      income: formatValue(response.data.balance.income),
+      outcome: formatValue(response.data.balance.outcome),
+      total: formatValue(response.data.balance.total),
+    };
+    setTransactions(formatedTransactions);
+    setBalance(formatedBalance);
+  }
+
   useEffect(() => {
-    async function loadTransactions(): Promise<void> {
-      const response = await api.get('transactions');
-
-      const formatedTransactions = response.data.transactions.map(
-        (transaction: Transaction) => ({
-          ...transaction,
-          formattedValue: formatValue(transaction.value),
-          formattedDate: new Date(transaction.created_at).toLocaleDateString(
-            'pt-br',
-          ),
-        }),
-      );
-
-      const formatedBalance = {
-        income: formatValue(response.data.balance.income),
-        outcome: formatValue(response.data.balance.outcome),
-        total: formatValue(response.data.balance.total),
-      };
-      setTransactions(formatedTransactions);
-      setBalance(formatedBalance);
-    }
-
     loadTransactions();
   }, []);
 
   async function handleDeleteTransaction(id: string): Promise<void> {
-    await api.delete(`/transactions/${id}`);
+    const newTransactions = transactions.filter(
+      transaction => transaction.id !== id,
+    );
+    setTransactions(newTransactions);
+
+    // await api.delete(`/transactions/${id}`);
+    // loadTransactions();
   }
 
   return (
@@ -106,25 +112,28 @@ const Dashboard: React.FC = () => {
             </thead>
 
             <tbody>
-              {transactions.map(transaction => (
-                <tr key={transaction.id}>
-                  <td className="title">{transaction.title}</td>
-                  <td className={transaction.type}>
-                    {transaction.type === 'outcome' && ' - '}
-                    {transaction.formattedValue}
-                  </td>
-                  <td>{transaction.category.title}</td>
-                  <td>{transaction.formattedDate}</td>
-                  <td>
-                    <button
-                      type="button"
-                      onClick={() => handleDeleteTransaction(transaction.id)}
-                    >
-                      <FiTrash />
-                    </button>
-                  </td>
-                </tr>
-              ))}
+              {transactions.map(transaction => {
+                console.log({ transaction });
+                return (
+                  <tr key={transaction.id}>
+                    <td className="title">{transaction.title}</td>
+                    <td className={transaction.type}>
+                      {transaction.type === 'outcome' && ' - '}
+                      {transaction.formattedValue}
+                    </td>
+                    <td>{transaction.category}</td>
+                    <td>{transaction.formattedDate}</td>
+                    <td>
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteTransaction(transaction.id)}
+                      >
+                        <FiTrash />
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </TableContainer>

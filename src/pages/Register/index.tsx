@@ -47,6 +47,9 @@ const Register: React.FC = () => {
               value={value}
               min={1}
               onChange={e => setValue(Number(e.target.value))}
+              style={{
+                maxWidth: '160px'
+              }}
             />
           </div>
           <input
